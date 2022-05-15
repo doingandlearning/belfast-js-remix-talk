@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+
+    <title>reveal.js</title>
+
+    <link rel="stylesheet" href="dist/reset.css" />
+    <link rel="stylesheet" href="dist/reveal.css" />
+    <link rel="stylesheet" href="dist/theme/black.css" />
+
+    <!-- Theme used for syntax highlighted code -->
+    <link rel="stylesheet" href="plugin/highlight/monokai.css" />
+    <style>
+      .container {
+        display: flex;
+      }
+      .col {
+        flex: 1;
+      }
+			body:after {
+content: url(./twitter.png);
+position: fixed;
+bottom: 1.5em;
+right: 1.5em;
+box-shadow: 5px 5px 10px #000; }
+    </style>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section>
+          <h1>Intro to Remix</h1>
+          <p>Kevin Cunningham (@dolearning)</p>
+        </section>
+        <section>
+          <quote>They say everyday a new JavaScript framework is born. </quote>
+        </section>
+        <section>
+          <h1>The Story of Remix</h1>
+          <ul>
+            <li class="fragment fade-up">Ryan Florence and Michael Jackson</li>
+            <li class="fragment fade-up">React Training and React Router</li>
+            <li class="fragment fade-up">
+              Remix was a closed source, licenced software
+            </li>
+            <li class="fragment fade-up">
+              Remix became open source in November 2021
+            </li>
+            <li class="fragment fade-up">
+              Kent C. Dodds joined the team around that time
+            </li>
+            <li class="fragment fade-up">
+              Lots of great things being built and created
+            </li>
+          </ul>
+        </section>
+				<section>
+					<h1>The Philosophy of Remix</h1>
+				</section>
+        <section class="container">
+          <div class="col">
+            <ul>
+              <li>Embrace the server/client model</li>
+            </ul>
+          </div>
+          <div class="col">
+            <pre><code data-trim data-line-numbers="all|2-4|5-7|10-21">
+export default function Gists() {
+  const gists = useSomeFetchWrapper(
+    "https://api.github.com/gists"
+  );
+  if (!gists) {
+    return <Skeleton />;
+  }
+  return (
+    <ul>
+      {gists.map((gist) => (
+        <li key={gist.id}>
+          <a href={gist.html_url}>
+            {gist.description}, {gist.owner.login}
+          </a>
+          <ul>
+            {Object.keys(gist.files).map((key) => (
+              <li key={key}>{key}</li>
+            ))}
+          </ul>
+        </li>
+      ))}
+    </ul>
+  );
+}
+</code></pre>
+          </div>
+        </section>
+        <section class="container">
+          <div class="col">
+            <ul>
+              <li>Embrace the server/client model</li>
+            </ul>
+          </div>
+          <div class="col">
+            <pre><code data-trim data-line-numbers="all|3|4|4-5|6-14">
+							import { json } from "@remix-run/{runtime}";
+
+							export async function loader() {
+								const res = await fetch("https://api.github.com/gists");
+								const gists = await res.json();
+								return json(
+									gists.map((gist) => {
+										return {
+											description: gist.description,
+											url: gist.html_url,
+											files: Object.keys(gist.files),
+											owner: gist.owner.login,
+										};
+									})
+								);
+							}
+</code></pre>
+          </div>
+        </section>
+        <section class="container">
+          <div class="col">
+            <ul>
+              <li>Embrace the server/client model</li>
+              <li>
+                Work with, not against, the foundations of the web: Browsers,
+                HTTP, and HTML. It’s always been good and it's gotten really
+                good in the last few years.
+              </li>
+            </ul>
+          </div>
+          <div class="col"></div>
+        </section>
+        <section class="container">
+          <div class="col">
+            <ul>
+              <li>Embrace the server/client model</li>
+              <li>
+                Work with, not against, the foundations of the web: Browsers,
+                HTTP, and HTML. It’s always been good and it's gotten really
+                good in the last few years.
+              </li>
+              <li>
+                Use JavaScript to augment the user experience by emulating
+                browser behavior.
+              </li>
+            </ul>
+          </div>
+          <div class="col"></div>
+        </section>
+        <section class="container">
+          <div class="col">
+            <ul>
+              <li>Embrace the server/client model</li>
+              <li>
+                Work with, not against, the foundations of the web: Browsers,
+                HTTP, and HTML. It’s always been good and it's gotten really
+                good in the last few years.
+              </li>
+              <li>
+                Use JavaScript to augment the user experience by emulating
+                browser behavior.
+              </li>
+              <li>Don't over-abstract the underlying technologies</li>
+            </ul>
+          </div>
+          <div class="col"></div>
+        </section>
+				<section>
+					<h1>What is Remix?</h1>
+					<ul>
+
+						<li class="fragment fade-up">A compiler</li>
+						<li class="fragment fade-up">HTTP Handler and Adapters</li>
+						<li class="fragment fade-up">Server framework</li>
+						<li class="fragment fade-up">Browser framework</li>
+					</ul>
+				</section>
+				<section>
+
+					<h2>Remix vs Next</h2>
+					<ul>
+						<li class="fragment fade-up">Both are great!</li>
+						<li class="fragment fade-up">Remix is as fast or faster than Next at serving static content</li>
+						<li class="fragment fade-up">Remix is faster than Next.js at serving dynamic content</li>
+						<li class="fragment fade-up">Remix enables fast user experiences even on slow networks</li>
+						<li class="fragment fade-up">Remix handles the fetching and the mutation of data</li>
+					</ul>
+				</section>
+				<section>
+					<h2>Let's code!</h2>
+				</section>
+      </div>
+    </div>
+
+    <script src="dist/reveal.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/markdown/markdown.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script>
+      // More info about initialization & config:
+      // - https://revealjs.com/initialization/
+      // - https://revealjs.com/config/
+      Reveal.initialize({
+        hash: true,
+
+        // Learn about plugins: https://revealjs.com/plugins/
+        plugins: [RevealMarkdown, RevealHighlight, RevealNotes],
+      });
+    </script>
+  </body>
+</html>
